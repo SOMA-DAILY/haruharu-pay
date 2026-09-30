@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>셋로그 소개팅 참가비 송금</title>
+<style>
+  :root{ --toss:#0064FF; --ink:#191F28; --sub:#8B95A1; --line:#E5E8EB; --bg:#fff; --warn:#D93025; }
+  @media (prefers-color-scheme: dark){
+    :root{ --toss:#3182F6; --ink:#F2F4F6; --sub:#8B95A1; --line:#2A2F36; --bg:#17171C; --warn:#FF6B5E; }
+  }
+  *{box-sizing:border-box;margin:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Pretendard",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex; justify-content:center;
+    padding:52px 20px calc(40px + env(safe-area-inset-bottom));
+  }
+  main{width:100%;max-width:420px;text-align:center}
+
+  #opening{color:var(--sub);font-size:15px;padding-top:80px}
+  .dots::after{content:"";animation:d 1.2s steps(4,end) infinite}
+  @keyframes d{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+
+  .stage{display:none;animation:in .25s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .stage{animation:none} .dots::after{animation:none;content:"..."}
+  }
+
+  h1{font-size:19px;font-weight:600;letter-spacing:-.02em}
+  .amount{font-size:44px;font-weight:800;letter-spacing:-.04em;margin:14px 0 4px;font-variant-numeric:tabular-nums}
+  .to{font-size:14px;color:var(--sub);margin-bottom:32px}
+
+  .btn{
+    display:block;width:100%;padding:19px;border-radius:14px;
+    background:var(--toss);color:#fff;font-size:18px;font-weight:600;
+    text-decoration:none;letter-spacing:-.01em;border:none;font-family:inherit;cursor:pointer;
+  }
+  .btn:active{filter:brightness(.92)}
+  .hint{font-size:13px;color:var(--sub);margin-top:14px;line-height:1.6}
+
+  .fallback{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:14px;line-height:1.75;color:var(--sub)}
+  .fallback b{color:var(--ink);font-weight:600}
+  .acct{font-variant-numeric:tabular-nums;font-size:16px;color:var(--ink);font-weight:600}
+  .ghost{
+    margin-top:12px;display:inline-block;padding:9px 16px;border-radius:9px;
+    border:1px solid var(--line);background:none;color:var(--ink);
+    font:inherit;font-size:14px;cursor:pointer;text-decoration:none;
+  }
+  .ghost:active{background:var(--line)}
+
+  /* 돌아가기 화면 */
+  #done .lead{font-size:21px;font-weight:700;letter-spacing:-.025em;line-height:1.4;margin-bottom:8px}
+  #done .leadsub{font-size:14.5px;color:var(--sub);margin-bottom:30px;line-height:1.6}
+  #closeHint{display:none;font-size:15px;color:var(--ink);line-height:1.65;
+    padding:18px;border:1px solid var(--line);border-radius:12px}
+  #closeHint b{font-weight:700}
+  #reopen{display:none;margin-top:18px;font-size:13.5px;color:var(--sub)}
+  #reopen a{color:var(--toss);text-decoration:none;font-weight:600}
+  .redo{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--sub);line-height:1.7}
+  .redo a{color:var(--toss);text-decoration:none;font-weight:600}
+
+  /* 잘못된 링크 */
+  #bad .lead{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;color:var(--warn)}
+  #bad p{font-size:15px;color:var(--sub);line-height:1.7}
+</style>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1586422299864867');
+fbq('track', 'PageView');
+// Lead 이벤트는 셀이 확인된 뒤 아래 본 스크립트에서 1회 쏨.
+// ⚠ 금액(value)과 계좌번호는 절대 보내지 않음 (메타 비즈니스 도구 약관의 금융정보 공유 금지)
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1586422299864867&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel -->
+</head>
+<body>
+<main>
+  <p id="opening">토스 앱을 여는 중<span class="dots"></span></p>
+
+  <!-- 1) 자동 실행이 막혔을 때 -->
+  <div id="manual" class="stage">
+    <h1 id="titleMain">셋로그 소개팅 참가비</h1>
+    <div class="amount" id="amtMain">—</div>
+    <div class="to">토스뱅크, 최o현</div>
+    <p class="hint" id="noteMain" hidden></p>
+
+    <a class="btn" id="tossBtn" href="">토스로 송금하기</a>
+    <p class="hint">누르면 토스 앱에 계좌와 금액이 채워진 채로 열려요</p>
+
+    <div class="fallback">
+      토스가 안 열리면 <b>직접 입금</b>해 주세요
+      <div class="acct">토스뱅크 1000-0141-0988</div>
+      <button class="ghost" id="copyBtn" type="button">계좌번호 복사</button>
+    </div>
+  </div>
+
+  <!-- 2) 토스에 다녀온 뒤 -->
+  <div id="done" class="stage">
+    <p class="lead">송금을 마치셨나요?</p>
+    <p class="leadsub">신청서로 돌아가 <b>송금자 이름</b>을 적어야<br>참가 확인이 됩니다</p>
+
+    <button class="btn" id="backBtn" type="button">신청서로 돌아가기</button>
+    <div id="closeHint"><b>이 창을 닫아 주세요.</b><br>뒤에 작성하던 신청서가 그대로 열려 있어요</div>
+    <p id="reopen">신청서를 닫으셨나요? <a href="" id="reopenLink">새로 열기</a></p>
+
+    <div class="redo">
+      아직 송금 전이신가요? <a href="" id="redoBtn">토스 다시 열기</a><br>
+      토스뱅크 1000-0141-0988 (최o현) <span id="amtSub">—</span>
+    </div>
+  </div>
+
+  <!-- 3) 알 수 없는 경로 -->
+  <div id="bad" class="stage">
+    <p class="lead">잘못된 링크예요</p>
+    <p>주소가 정확하지 않아서 <b>금액을 표시하지 않았습니다.</b><br><br>
+       신청서로 돌아가 <b>참가비 안내</b>의 송금 버튼을 다시 눌러 주세요.<br>
+       임의로 입금하지 마세요.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ─────────────────────────────────────────────────────────────
+  // 셀 정의 — 금액은 여기 한 곳에만 있음. 파일마다 박아두지 말 것.
+  //
+  // 5개 경로가 이 파일 하나를 그대로 복사해서 씀. 경로로 셀을 판별함.
+  // 금액을 바꿀 때: 아래 표만 고치고 `bash pay/build.sh` 로 5곳에 복사한 뒤 배포.
+  // 폼 본문 금액도 같이 고칠 것 — 어긋나면 사용자가 다른 숫자 둘을 보게 됨.
+  // ─────────────────────────────────────────────────────────────
+  // 2026-08-25 — 11기(EXP-018)로 갱신. 참가비 8,900원, 돌아갈 폼은 11기 신규 3폼.
+  //   /   인스타 바이오 — 광주(jaAD2Y) 와 서울(1Aor4Q) 이 같이 씀 → back 을 비움.
+  //       (한쪽 폼을 박으면 다른 지역 신청자가 남의 폼으로 넘어가 중복 제출을 함)
+  //   /t/ 메타 A(VLOEyN) 와 메타 B(Ek7zYA) 가 **같이** 씀 → 돌아갈 폼을 특정할 수 없어 back 을 비움.
+  //       (비면 '돌아가기' 링크가 안 뜨고 사용자는 브라우저 뒤로가기로 자기 폼에 돌아감.
+  //        back 에 한쪽 폼을 박으면 다른 쪽 사용자가 남의 폼으로 넘어가 중복 제출을 함)
+  //       A/B 판정은 각 폼의 제출과 hidden `src` 로 잡히므로 back 이 없어도 지장 없음.
+  // /g/ /r/ /s/ 는 11기에서 안 씀 — 10기 값 그대로 둠. 쓰기 전에 금액부터 다시 볼 것.
+  var CELLS = {
+    // 2026-09-10 — 앱 1기 신청 폼 5개(ZjBlKV J94MPK 81lMBz D48oJb PdxNXQ)의 송금 버튼이 루트를 가리켜
+    //   8,900 이 뜨던 것을 사용자 지시로 루트 = 앱 1기 보증금 5,000 으로 바꿈. 11기 8,900 셀은 종료(폼 닫힘).
+    '/':   { amount: 5000, back: '',                                  name: '하루하루 앱 1기 베타 보증금 (루트, 5폼 공용)',
+             title: '하루하루 앱 1기 보증금',
+             note:  '참여를 마치고 최종 설문을 제출하면 전액 환불해 드려요' },
+    '/g/': { amount: 4900, back: 'https://docs.google.com/forms/d/e/1FAIpQLSfnELkEy7DnxVcOXGSRQmvrINzZSY3MMqCI2AWPY_iYn4iCyw/viewform', name: '메타 구글폼 셀 (10기, 미사용)' },
+    '/t/': { amount: 8900, back: '',                                  name: '메타 A/B 공용 (11기)' },
+    '/r/': { amount: 2900, back: 'https://tally.so/r/5B06Md',         name: '개인 메시지(재참가) (10기, 미사용)' },
+    '/s/': { amount: 5000, back: 'https://tally.so/r/9qjrxK',         name: '서울 에타 남성 보증금 (11기)' },
+    '/c/': { amount: 4900, back: 'https://tally.so/r/MejNAY',         name: '메타 소재AB EXP-016 (10기, 미사용)' },
+    // 2026-09-01 신설 — 하루하루 앱 1기 베타. 참가비가 아니라 **보증금**이라 문구를 갈아끼움.
+    // 2026-09-02 back 을 비움 — 신청 폼을 채널별로 3개(ZjBlKV 웹사이트 / J94MPK 인스타 바이오 /
+    //   81lMBz 광고)로 물리 분리했는데 셋 다 이 셀 하나를 씀. 한쪽을 박으면 다른 채널 신청자가
+    //   남의 폼으로 넘어가 채널 분모가 오염되고 중복 제출이 남. `/` `/t/` 와 같은 처리임.
+    //   채널 판정은 각 폼의 제출과 hidden `src` 로 잡히므로 back 이 없어도 지장 없음.
+    // 2026-09-28 신설 — 앱 3기 본모집 (join.haruharu.co.kr 자체 폼). 일반 7,900 / 사전알림 신청자 4,900.
+    //   back 은 비움: 서울/광주 폼이 같이 씀. 폼이 새 탭으로 여니 신청서는 뒤에 그대로 있음.
+    '/j/': { amount: 7900, back: '', name: '앱 3기 참가비 일반', title: '하루하루 3기 참가비',
+             note:  '인원이 안 맞아 방이 열리지 않으면 전액 돌려드려요' },
+    '/e/': { amount: 4900, back: '', name: '앱 3기 참가비 사전알림', title: '하루하루 3기 참가비 (사전 알림)',
+             note:  '인원이 안 맞아 방이 열리지 않으면 전액 돌려드려요' },
+    // 2026-09-30 신설 — 전남대 축제 이벤트(방 10/4~5) 전용. join /jnu-festival/ 폼이 씀.
+    //   사전알림 /e/ 와 금액은 같지만 따로 둠: /e/ 를 닫아도 축제 송금은 살아 있게.
+    '/f/': { amount: 4900, back: '', name: '전남대 축제 이벤트 참가비', title: '하루하루 전남대 축제 이벤트 참가비',
+             note:  '인원이 안 맞아 방이 열리지 않으면 전액 돌려드려요' },
+    '/a/': { amount: 5000, back: '',                                  name: '하루하루 앱 1기 베타 보증금 (3폼 공용)',
+             title: '하루하루 앱 1기 보증금',
+             note:  '참여를 마치고 최종 설문을 제출하면 전액 환불해 드려요' }
+  };
+
+  var ACCT      = '1000-0141-0988';
+  var ACCT_RAW  = '100001410988';
+  var BANK_ENC  = '%ED%86%A0%EC%8A%A4%EB%B1%85%ED%81%AC'; // 토스뱅크
+  var TOSS_PKG  = 'viva.republica.toss';
+
+  // ── 경로 정규화 → 셀 판별 ─────────────────────────────────────
+  // Cloudflare Pages는 없는 경로에 404를 안 주고 루트 index.html을 200으로 서빙함.
+  // 그래서 /R/ 이나 /rr/ 같은 오타가 조용히 4,900원 화면이 되던 사고가 있었음.
+  // 여기서 경로를 직접 확인해서, 모르는 경로면 금액을 아예 안 띄움.
+  function cellKey() {
+    var p = String(location.pathname || '/');
+    p = p.replace(/index\.html$/i, '');
+    if (p.charAt(p.length - 1) !== '/') p += '/';
+    if (p === '//') p = '/';
+    return p;
+  }
+
+  var KEY  = cellKey();
+  var CELL = Object.prototype.hasOwnProperty.call(CELLS, KEY) ? CELLS[KEY] : null;
+
+  var stage = 'opening';
+  function show(id) {
+    if (stage === id) return;
+    stage = id;
+    var el = document.getElementById('opening');
+    if (el) el.style.display = 'none';
+    ['manual', 'done', 'bad'].forEach(function (n) {
+      var d = document.getElementById(n);
+      if (d) d.style.display = (n === id) ? 'block' : 'none';
+    });
+  }
+
+  // 모르는 경로 → 금액 표시 없이 즉시 중단. 딥링크도 안 띄움.
+  if (!CELL) { show('bad'); return; }
+
+  var AMT     = CELL.amount;
+  var amtText = AMT.toLocaleString('ko-KR') + '원';
+  document.getElementById('amtMain').textContent = amtText;
+  document.getElementById('amtSub').textContent  = amtText;
+
+  // 셀별 문구. 참가비 셀은 기본값을 쓰고, 보증금 셀만 제목과 안내줄을 갈아끼움.
+  if (CELL.title) {
+    document.getElementById('titleMain').textContent = CELL.title;
+    document.title = CELL.title + ' 송금';
+  }
+  if (CELL.note) {
+    var noteEl = document.getElementById('noteMain');
+    noteEl.textContent = CELL.note;
+    noteEl.hidden = false;
+  }
+
+  // ── 토스 딥링크 ───────────────────────────────────────────────
+  var Q = 'send?bank=' + BANK_ENC + '&accountNo=' + ACCT_RAW + '&amount=' + AMT;
+  var TOSS = 'supertoss://' + Q;
+
+  // 안드로이드는 intent:// 가 인앱 브라우저에서 더 잘 뚫림.
+  // 자동 실행은 검증된 supertoss:// 를 그대로 쓰고,
+  // 자동이 막혀서 수동 화면까지 온 경우에만 intent:// 를 씀 (실패해도 계좌 복사가 남음).
+  var isAndroid = /android/i.test(navigator.userAgent || '');
+  var TOSS_BTN  = isAndroid
+    ? 'intent://' + Q + '#Intent;scheme=supertoss;package=' + TOSS_PKG + ';end'
+    : TOSS;
+
+  document.getElementById('tossBtn').href = TOSS_BTN;
+  document.getElementById('redoBtn').href = TOSS_BTN;
+
+  // ── 메타 픽셀 Lead ────────────────────────────────────────────
+  // 알려진 셀에 도달했을 때만 1회. content_name 은 src 파라미터가 있으면 그것,
+  // 없으면 경로(=셀). 예전엔 폼 링크에 ?src= 가 안 붙어서 전부 'unknown' 이었음.
+  try {
+    var m   = /[?&]src=([^&]*)/.exec(location.search);
+    var src = m ? decodeURIComponent(m[1]) : '';
+    if (window.fbq) fbq('track', 'Lead', { content_name: src || KEY });
+  } catch (e) { /* 깨진 파라미터가 페이지를 죽이지 않게 */ }
+
+  // ── 앱으로 넘어간 적이 있는지 ─────────────────────────────────
+  var wasHidden = false;
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      wasHidden = true;
+    } else if (wasHidden) {
+      setTimeout(function () { show('done'); }, 200);
+    }
+  });
+
+  // 1) 바로 토스 열기 시도
+  try { location.href = TOSS; } catch (e) {}
+
+  // 2) 1.2초 뒤에도 화면이 보이면 = 자동 실행이 막힌 것
+  setTimeout(function () {
+    if (!document.hidden && !wasHidden) show('manual');
+  }, 1200);
+
+  // 3) 최후 안전장치 — 어떤 경우에도 "여는 중"에서 멈추지 않게
+  setTimeout(function () {
+    if (stage === 'opening') show(wasHidden ? 'done' : 'manual');
+  }, 4500);
+
+  // ── 돌아가기 ─────────────────────────────────────────────────
+  // 같은 탭으로 들어왔으면 뒤로가기가 최선임 (작성하던 답변이 그대로 남음).
+  // 새 탭으로 열렸으면(Tally 링크가 target="_blank" 를 강제함) 뒤로 갈 데가 없음.
+  // 이때 폼을 새로 열어주면 빈 폼이 하나 더 생겨서 어느 쪽에 쓸지 헷갈림
+  // → 원래 탭으로 돌아가라고 안내하는 걸 1순위로 두고, 새로 열기는 보조로 내림.
+  function param(name) {
+    try {
+      var m = new RegExp('[?&]' + name + '=([^&]*)').exec(location.search);
+      return m ? decodeURIComponent(m[1]) : '';
+    } catch (e) { return ''; }
+  }
+  var backId  = (param('back') || '').replace(/[^A-Za-z0-9]/g, '');
+  var BACK_URL = CELL.back || (backId ? 'https://tally.so/r/' + backId : '');
+
+  var backBtn    = document.getElementById('backBtn');
+  var closeHint  = document.getElementById('closeHint');
+  var reopen     = document.getElementById('reopen');
+  var reopenLink = document.getElementById('reopenLink');
+
+  // 뒤로가기가 실제로 폼으로 돌아가는 경우에만 그 버튼을 씀.
+  // history.length 만 보면 안 됨 — 빈 탭에서 주소를 직접 열어도 2가 나옴(실측).
+  // 폼에서 같은 탭으로 넘어온 경우에만 referrer 에 폼 도메인이 남음.
+  // Tally 링크는 target="_blank" + rel="noreferrer" 라 새 탭이고 referrer 가 비어 있음.
+  var fromForm = /(^|\.)tally\.so$|(^|\.)google\.com$/.test((function () {
+    try { return new URL(document.referrer).hostname; } catch (e) { return ''; }
+  })());
+  var canGoBack = fromForm && window.history.length > 1;
+
+  if (canGoBack) {
+    backBtn.addEventListener('click', function () { history.back(); });
+  } else {
+    backBtn.style.display = 'none';
+    closeHint.style.display = 'block';
+    if (BACK_URL) {
+      reopenLink.href = BACK_URL;
+      reopen.style.display = 'block';
+    }
+  }
+
+  // ── 계좌번호 복사 ────────────────────────────────────────────
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var btn = this;
+    function done(){ btn.textContent = '복사됐어요'; setTimeout(function(){ btn.textContent = '계좌번호 복사'; }, 1600); }
+    function fallback(){
+      var t = document.createElement('textarea');
+      t.value = ACCT; t.setAttribute('readonly','');
+      t.style.position = 'absolute'; t.style.left = '-9999px';
+      document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = '복사 실패'; }
+      document.body.removeChild(t);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ACCT).then(done, fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
