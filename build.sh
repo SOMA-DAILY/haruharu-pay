@@ -3,9 +3,9 @@
 # 금액·돌아갈 폼은 index.html 안의 CELLS 표에서만 고침.
 set -euo pipefail
 cd "$(dirname "$0")"
-for d in g t r s c a j e f; do
+for d in g t r s c a j e f d; do
   mkdir -p "$d"
   cp index.html "$d/index.html"
 done
 cp index.html 404.html
-echo "복사 완료: / /g/ /t/ /r/ /s/ /c/ /a/ /j/ /e/ /f/ 404.html"
+echo "복사 완료: / /g/ /t/ /r/ /s/ /c/ /a/ /j/ /e/ /f/ /d/ 404.html"
