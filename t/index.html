@@ -249,13 +249,13 @@ src="https://www.facebook.com/tr?id=1586422299864867&ev=PageView&noscript=1"
   document.getElementById('tossBtn').href = TOSS_BTN;
   document.getElementById('redoBtn').href = TOSS_BTN;
 
-  // ── 메타 픽셀 Lead ────────────────────────────────────────────
+  // ── 메타 픽셀 PayPageView ─────────────────────────────────────
   // 알려진 셀에 도달했을 때만 1회. content_name 은 src 파라미터가 있으면 그것,
-  // 없으면 경로(=셀). 예전엔 폼 링크에 ?src= 가 안 붙어서 전부 'unknown' 이었음.
+  // 없으면 경로(=셀). Lead 는 join 신청폼 제출에서만 쏨 (여기서도 쏘면 신청 1건이 Lead 2건, #2)
   try {
     var m   = /[?&]src=([^&]*)/.exec(location.search);
     var src = m ? decodeURIComponent(m[1]) : '';
-    if (window.fbq) fbq('track', 'Lead', { content_name: src || KEY });
+    if (window.fbq) fbq('trackCustom', 'PayPageView', { content_name: src || KEY });
   } catch (e) { /* 깨진 파라미터가 페이지를 죽이지 않게 */ }
 
   // ── 앱으로 넘어간 적이 있는지 ─────────────────────────────────
