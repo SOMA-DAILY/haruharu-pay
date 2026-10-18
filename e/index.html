@@ -181,6 +181,10 @@ src="https://www.facebook.com/tr?id=1586422299864867&ev=PageView&noscript=1"
     //   금액은 join `shared/forms.mjs` 의 friendFee 와 같이 맞출 것.
     '/b/': { amount: 5900, back: '', name: '앱 참가비 친구 할인 (4기~)', title: '하루하루 참가비 (친구 할인)',
              note:  '인원이 안 맞아 방이 열리지 않으면 전액 돌려드려요' },
+    // 2026-10-17 신설 — 재참여 설문 + 친구 할인. join 재참여 후기 폼(/rejoin/seoul/)에서 후기를 남기고 6기나 7기에 참여하면서(7,900 → 5,900) 친구와 같이 신청하면 2,000원 더 할인(3,900).
+    //   금액은 join `shared/forms.mjs` 의 REJOIN_SV.friendFee 와 같이 맞출 것.
+    '/k/': { amount: 3900, back: '', name: '앱 참가비 재참여 설문 + 친구 할인 (6기~)', title: '하루하루 참가비 (재참여 친구 할인)',
+             note:  '인원이 안 맞아 방이 열리지 않으면 전액 돌려드려요' },
     // 2026-09-30 신설 — 전남대 축제 이벤트(방 10/4~5) 전용. join /jnu-festival/ 폼이 씀.
     //   사전알림 /e/ 와 금액은 같지만 따로 둠: /e/ 를 닫아도 축제 송금은 살아 있게.
     '/f/': { amount: 4900, back: '', name: '전남대 축제 이벤트 참가비', title: '하루하루 전남대 축제 이벤트 참가비',
